@@ -436,6 +436,52 @@ function closeEditPanel() {
 }
 
 
+const SERVEIS_OPTIONS = `
+<option value="Al·lergologia">Al·lergologia</option>
+<option value="Anatomia patològica">Anatomia patològica</option>
+<option value="Anestesiologia i reanimació">Anestesiologia i reanimació</option>
+<option value="Angiologia i cirurgia vascular">Angiologia i cirurgia vascular</option>
+<option value="Aparell digestiu">Aparell digestiu</option>
+<option value="Cardiologia">Cardiologia</option>
+<option value="Cirurgia cardiovascular">Cirurgia cardiovascular</option>
+<option value="Cirurgia general i de l'aparell digestiu">Cirurgia general i de l'aparell digestiu</option>
+<option value="Cirurgia oral i maxil·lofacial">Cirurgia oral i maxil·lofacial</option>
+<option value="Cirurgia ortopèdica i traumatologia">Cirurgia ortopèdica i traumatologia</option>
+<option value="Cirurgia pediàtrica">Cirurgia pediàtrica</option>
+<option value="Cirurgia plàstica, estètica i reparadora">Cirurgia plàstica, estètica i reparadora</option>
+<option value="Cirurgia toràcica">Cirurgia toràcica</option>
+<option value="Dermatologia medicoquirúrgica i venereologia">Dermatologia medicoquirúrgica i venereologia</option>
+<option value="Endocrinologia i nutrició">Endocrinologia i nutrició</option>
+<option value="Farmacologia clínica">Farmacologia clínica</option>
+<option value="Geriatria">Geriatria</option>
+<option value="Hematologia i hemoteràpia">Hematologia i hemoteràpia</option>
+<option value="Medicina del treball">Medicina del treball</option>
+<option value="Medicina familiar i comunitària">Medicina familiar i comunitària</option>
+<option value="Medicina física i rehabilitació">Medicina física i rehabilitació</option>
+<option value="Medicina intensiva">Medicina intensiva</option>
+<option value="Medicina interna">Medicina interna</option>
+<option value="Medicina legal i forense">Medicina legal i forense</option>
+<option value="Medicina nuclear">Medicina nuclear</option>
+<option value="Medicina preventiva i salut pública">Medicina preventiva i salut pública</option>
+<option value="Medicina d'urgències i emergències">Medicina d'urgències i emergències</option>
+<option value="Nefrologia">Nefrologia</option>
+<option value="Pneumologia">Pneumologia</option>
+<option value="Neurocirurgia">Neurocirurgia</option>
+<option value="Neurofisiologia clínica">Neurofisiologia clínica</option>
+<option value="Neurologia">Neurologia</option>
+<option value="Obstetrícia i ginecologia">Obstetrícia i ginecologia</option>
+<option value="Oftalmologia">Oftalmologia</option>
+<option value="Oncologia mèdica">Oncologia mèdica</option>
+<option value="Oncologia radioteràpica">Oncologia radioteràpica</option>
+<option value="Otorinolaringologia">Otorinolaringologia</option>
+<option value="Pediatria i les seves àrees específiques">Pediatria i les seves àrees específiques</option>
+<option value="Psiquiatria">Psiquiatria</option>
+<option value="Psiquiatria infantil i de l'adolescència">Psiquiatria infantil i de l'adolescència</option>
+<option value="Radiodiagnòstic">Radiodiagnòstic</option>
+<option value="Reumatologia">Reumatologia</option>
+<option value="Urologia">Urologia</option>
+`;
+
 function jsonpFetch(url) {
   return new Promise((resolve, reject) => {
     const cbName = 'cb_' + Math.random().toString(36).slice(2);
