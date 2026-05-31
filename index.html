@@ -435,6 +435,21 @@ function closeEditPanel() {
   document.getElementById('edit-status').textContent = '';
 }
 
+
+function jsonpFetch(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Math.random().toString(36).slice(2);
+    window[cbName] = function(data) {
+      delete window[cbName];
+      document.head.removeChild(script);
+      resolve(data);
+    };
+    const script = document.createElement('script');
+    script.src = url + '&callback=' + cbName;
+    script.onerror = () => { delete window[cbName]; reject(new Error('JSONP error')); };
+    document.head.appendChild(script);
+  });
+}
 async function loadCentreServeis() {
   const centreId = document.getElementById('edit-centre-select').value;
   if (!centreId) { document.getElementById('edit-serveis-section').style.display='none'; return; }
@@ -444,16 +459,14 @@ async function loadCentreServeis() {
   list.innerHTML = '';
   try {
     const url = APPS_SCRIPT_URL + '?action=get&centre_id=' + centreId;
-    const r = await fetch(url);
-    const data = await r.json();
+    const data = await jsonpFetch(url);
     if (data.ok && data.serveis && data.serveis.length > 0) {
       data.serveis.forEach(s => addServeiRow(s.servei, s.pct));
     }
   } catch(e) {
-    // Si falla, carrega des de dades locals
     const d = sheetData[parseInt(centreId)];
     if (d && d.serveis && d.serveis.length > 0) {
-      d.serveis.forEach(s => addServeiRow(s.nom, s.pct));
+      d.serveis.forEach(s => addServeiRow(s.nom || s.servei, s.pct));
     }
   }
   document.getElementById('edit-status').textContent = '';
@@ -490,8 +503,7 @@ async function saveServeis() {
       centre_id: centreId,
       serveis: JSON.stringify(serveis)
     });
-    const resp = await fetch(APPS_SCRIPT_URL + '?' + params.toString());
-    const data = await resp.json();
+    const data = await jsonpFetch(APPS_SCRIPT_URL + '?' + params.toString());
     if (data.ok) {
       document.getElementById('edit-status').textContent = '✓ Guardat correctament';
       await syncFromSheet();
