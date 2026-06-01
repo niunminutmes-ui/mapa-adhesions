@@ -248,10 +248,12 @@ function parseCSV(text) {
   const lines = text.trim().split("\n");
   if (lines.length < 2) return {};
   const result = {};
+  // Detectem separador: coma o punt i coma
+  const sep = lines[1] && lines[1].includes(";") ? ";" : ",";
   for (let i = 1; i < lines.length; i++) {
     const raw = lines[i].trim();
     if (!raw) continue;
-    const cols = raw.split(",");
+    const cols = raw.split(sep);
     const id = parseInt((cols[0]||"").trim());
     if (!id) continue;
     const servei = (cols[1]||"").trim().replace(/^"|"$/g,"");
@@ -271,13 +273,17 @@ async function syncFromSheet() {
     let text = null;
     try {
       const rd = await fetch(CSV_URL + "&cachebust=" + Date.now());
-      if (rd.ok) text = await rd.text();
+      if (rd.ok) {
+        const buf = await rd.arrayBuffer();
+        text = new TextDecoder("utf-8").decode(buf);
+      }
     } catch(e) {}
     if (!text) {
       const proxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(CSV_URL);
       const rp = await fetch(proxy);
       if (!rp.ok) throw new Error("HTTP " + rp.status);
-      text = await rp.text();
+      const buf = await rp.arrayBuffer();
+      text = new TextDecoder("utf-8").decode(buf);
     }
     if (!text || text.trim() === "" || text.split("\n").length <= 1) {
       sheetData = {};
