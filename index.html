@@ -304,13 +304,23 @@ function parseCSV(text) {
 }
 
 async function fetchCSV(url) {
-  const proxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url + "&t=" + Date.now());
-  const rp = await fetch(proxy);
-  if (!rp.ok) throw new Error("HTTP " + rp.status);
-  const buf = await rp.arrayBuffer();
-  // Intentem UTF-8, si falla usem windows-1252
-  let text = new TextDecoder("utf-8").decode(buf);
-  if (text.includes("Ã")) text = new TextDecoder("windows-1252").decode(buf);
+  const proxies = [
+    "https://api.allorigins.win/raw?url=",
+    "https://api.codetabs.com/v1/proxy?quest="
+  ];
+  let text = null;
+  for (const proxy of proxies) {
+    try {
+      const rp = await fetch(proxy + encodeURIComponent(url + "&t=" + Date.now()));
+      if (rp.ok) {
+        const buf = await rp.arrayBuffer();
+        text = new TextDecoder("utf-8").decode(buf);
+        if (text.includes("Ã")) text = new TextDecoder("windows-1252").decode(buf);
+        if (text.includes(",") || text.includes(";")) break;
+      }
+    } catch(e) {}
+  }
+  if (!text) throw new Error("No s\'ha pogut connectar");
   return text;
 }
 
