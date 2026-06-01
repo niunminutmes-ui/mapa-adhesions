@@ -283,7 +283,7 @@ function parseCSVServeis(text) {
 }
 
 function parseCSVEstat(text) {
-  // Format Full 1: ID | ... | Estat (columna I = index 8)
+  // Format Full 1: ID(0) | Regio(1) | Nom(2) | ... | Estat(8)
   const lines = text.trim().split("\n");
   if (lines.length < 2) return {};
   const result = {};
@@ -294,7 +294,8 @@ function parseCSVEstat(text) {
     const id = parseInt((cols[0]||"").trim());
     if (!id) continue;
     const estat = (cols[8]||"").trim().replace(/^"|"$/g,"").toUpperCase();
-    result[id] = estat === "SI";
+    const regio = (cols[1]||"").trim().replace(/^"|"$/g,"");
+    result[id] = { adherit: estat === "SI", regio: regio };
   }
   return result;
 }
@@ -338,8 +339,10 @@ async function syncFromSheet() {
     sheetData = {};
     const allIds = new Set([...Object.keys(serveisData).map(Number), ...Object.keys(estatData).map(Number)]);
     allIds.forEach(id => {
+      const e = estatData[id] || { adherit: false, regio: "" };
       sheetData[id] = {
-        adherit: estatData[id] === true,
+        adherit: e.adherit,
+        regio: e.regio,
         serveis: (serveisData[id] || {}).serveis || []
       };
     });
@@ -407,7 +410,7 @@ function buildPopup(h) {
   return `
     <div class="popup-header">
       <h3>${h.nom}</h3>
-      <p>${h.municipi} · ${h.zona}</p>
+      <p>${h.municipi} · ${d.regio || h.zona}</p>
     </div>
     <div class="popup-body">
       ${statusHtml}
