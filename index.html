@@ -244,6 +244,25 @@ const HOSPITALS = [
   {id:31,nom:"Hospital Residència Sant Camil",municipi:"Sant Pere de Ribes",zona:"Penedès / Garraf / Anoia",lat:41.2539,lng:1.7653}
 ];
 
+
+function parseCSVLine(line) {
+  const cols = [];
+  let col = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+    } else if (ch === ',' && !inQuotes) {
+      cols.push(col.trim());
+      col = "";
+    } else {
+      col += ch;
+    }
+  }
+  cols.push(col.trim());
+  return cols;
+}
 function parseCSVServeis(text) {
   // Format Serveis_centre: centre_id | servei | pct
   const lines = text.trim().split("\n");
@@ -271,7 +290,7 @@ function parseCSVEstat(text) {
   for (let i = 1; i < lines.length; i++) {
     const raw = lines[i].trim();
     if (!raw) continue;
-    const cols = raw.split(",");
+    const cols = parseCSVLine(raw);
     const id = parseInt((cols[0]||"").trim());
     if (!id) continue;
     const estat = (cols[8]||"").trim().replace(/^"|"$/g,"").toUpperCase();
