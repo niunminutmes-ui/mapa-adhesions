@@ -339,9 +339,8 @@ function buildPopup(h) {
     : `<span class="popup-status status-no">○ No adherit</span>`;
   const serveisHtml = d.serveis && d.serveis.length > 0
     ? d.serveis.map(s => {
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f0f0f0;">
+        return `<div style="padding:5px 0;border-bottom:1px solid #f0f0f0;">
           <span style="font-size:12px;color:#333;">${s.nom}</span>
-          <span style="font-size:12px;font-weight:700;color:#801D28;margin-left:12px;white-space:nowrap;">${s.pct||0}%</span>
         </div>`;
       }).join("")
     : `<span class="no-serveis">Cap servei registrat encara</span>`;
