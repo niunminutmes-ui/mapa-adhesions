@@ -160,7 +160,7 @@ header p { font-size: 12px; opacity: 0.85; margin-top: 2px; }
 
 <script>
 const PWD = "Noparemdemillorar2026!";
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_xqsMHVXklzuOysF4-5xfejupKS_3bTrovB0AISHvYntFYcr2oerLm7GGJIShDaEtmlcMLF2bhSmD/pub?gid=791035390&single=true&output=csv";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_xqsMHVXklzuOysF4-5xfejupKS_3bTrovB0AISHvYntFYcr2oerLm7GGJIShDaEtmlcMLF2bhSmD/pub?gid=791035390&single=true&output=csv&tqx=out:csv";
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/14TmX_dIlmcwtpt6KdwaTbaI_n2DfZO2EqhJ9xMSfMrU/edit";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjlJXFiKgXyToWOxGBXcxuXqls-3JlmUvDwaETp3OvR-kORomEWHYFuT6ogToGAFVvUQ/exec";
 
@@ -275,7 +275,7 @@ async function syncFromSheet() {
       const rd = await fetch(CSV_URL + "&cachebust=" + Date.now());
       if (rd.ok) {
         const buf = await rd.arrayBuffer();
-        text = new TextDecoder("utf-8").decode(buf);
+        text = new TextDecoder("windows-1252").decode(buf);
       }
     } catch(e) {}
     if (!text) {
@@ -283,7 +283,7 @@ async function syncFromSheet() {
       const rp = await fetch(proxy);
       if (!rp.ok) throw new Error("HTTP " + rp.status);
       const buf = await rp.arrayBuffer();
-      text = new TextDecoder("utf-8").decode(buf);
+      text = new TextDecoder("windows-1252").decode(buf);
     }
     if (!text || text.trim() === "" || text.split("\n").length <= 1) {
       sheetData = {};
