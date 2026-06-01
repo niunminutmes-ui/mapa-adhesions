@@ -244,7 +244,7 @@ const HOSPITALS = [
 ];
 
 function parseCSV(text) {
-  // Format: centre_id | adherit (SI/NO) | servei | pct
+  // Format: centre_id | servei | pct | adherit (SI/NO)
   const lines = text.trim().split("\n");
   if (lines.length < 2) return {};
   const result = {};
@@ -254,11 +254,10 @@ function parseCSV(text) {
     const cols = raw.split(",");
     const id = parseInt((cols[0]||"").trim());
     if (!id) continue;
-    const adherit = (cols[1]||"").trim().replace(/^"|"$/g,"").toUpperCase() === "SI";
-    const servei = (cols[2]||"").trim().replace(/^"|"$/g,"");
-    const pct = parseInt((cols[3]||"0").trim()) || 0;
-    if (!result[id]) result[id] = { adherit: adherit, serveis: [] };
-    // Actualitzem adherit si trobem SI en qualsevol fila del centre
+    const servei = (cols[1]||"").trim().replace(/^"|"$/g,"");
+    const pct = parseInt((cols[2]||"0").trim()) || 0;
+    const adherit = (cols[3]||"").trim().replace(/^"|"$/g,"").toUpperCase() === "SI";
+    if (!result[id]) result[id] = { adherit: false, serveis: [] };
     if (adherit) result[id].adherit = true;
     if (servei) result[id].serveis.push({ servei: servei, pct: pct });
   }
