@@ -304,25 +304,11 @@ function parseCSV(text) {
   return parseCSVServeis(text);
 }
 
-async function fetchCSV(url) {
-  const proxies = [
-    "https://api.allorigins.win/raw?url=",
-    "https://api.codetabs.com/v1/proxy?quest="
-  ];
-  let text = null;
-  for (const proxy of proxies) {
-    try {
-      const rp = await fetch(proxy + encodeURIComponent(url + "&t=" + Date.now()));
-      if (rp.ok) {
-        const buf = await rp.arrayBuffer();
-        text = new TextDecoder("utf-8").decode(buf);
-        if (text.includes("Ã")) text = new TextDecoder("windows-1252").decode(buf);
-        if (text.includes(",") || text.includes(";")) break;
-      }
-    } catch(e) {}
-  }
-  if (!text) throw new Error("No s\'ha pogut connectar");
-  return text;
+async function fetchCSV(gid) {
+  // Usem el Apps Script com a proxy per evitar CORS
+  const data = await jsonpFetch(APPS_SCRIPT_URL + "?action=csv&gid=" + gid);
+  if (!data.ok) throw new Error(data.error || "Error CSV");
+  return data.text;
 }
 
 async function syncFromSheet() {
@@ -330,8 +316,8 @@ async function syncFromSheet() {
   try {
     // Llegim els dos CSVs en paral·lel
     const [textServeis, textEstat] = await Promise.all([
-      fetchCSV(CSV_URL),
-      fetchCSV(CSV_ESTAT_URL)
+      fetchCSV("791035390"),
+      fetchCSV("1563800609")
     ]);
     const serveisData = parseCSVServeis(textServeis);
     const estatData = parseCSVEstat(textEstat);
