@@ -340,7 +340,7 @@ function buildPopup(h) {
   const serveisHtml = d.serveis && d.serveis.length > 0
     ? d.serveis.map(s => {
         return `<div style="padding:5px 0;border-bottom:1px solid #f0f0f0;">
-          <span style="font-size:12px;color:#333;">${s.nom}</span>
+          <span style="font-size:12px;color:#333;">${s.servei || s.nom}</span>
         </div>`;
       }).join("")
     : `<span class="no-serveis">Cap servei registrat encara</span>`;
@@ -660,5 +660,4 @@ async function saveServeis() {
   </div>
 </div>
 
-</body>
-</html>
+</b
