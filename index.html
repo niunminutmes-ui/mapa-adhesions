@@ -583,12 +583,18 @@ function addServeiRow(nom, pct) {
   const list = document.getElementById('edit-serveis-list');
   const row = document.createElement('div');
   row.className = 'servei-row';
-  row.innerHTML = `
-    <select><option value="">— Servei —</option>${SERVEIS_OPTIONS}</select>
-    <input type="number" min="0" max="100" value="${pct||0}" placeholder="%">
-    <button onclick="this.parentElement.remove()">🗑</button>
-  `;
-  if (nom) row.querySelector('select').value = nom;
+  // Creem el select manualment per assegurar que les opcions existeixen abans d'assignar valor
+  const select = document.createElement('select');
+  select.innerHTML = '<option value="">— Servei —</option>' + SERVEIS_OPTIONS;
+  if (nom) select.value = nom;
+  const input = document.createElement('input');
+  input.type = 'number'; input.min = '0'; input.max = '100';
+  input.value = parseInt(pct) || 0; input.placeholder = '%';
+  const btn = document.createElement('button');
+  btn.textContent = '🗑'; btn.onclick = function(){ this.parentElement.remove(); };
+  row.appendChild(select);
+  row.appendChild(input);
+  row.appendChild(btn);
   list.appendChild(row);
 }
 
