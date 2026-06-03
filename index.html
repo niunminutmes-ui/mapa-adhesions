@@ -49,7 +49,7 @@ header p { font-size: 12px; opacity: 0.85; margin-top: 2px; }
 .popup-header p { font-size: 11px; opacity: 0.85; margin-top: 3px; }
 .popup-body { padding: 12px 14px; }
 .popup-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
-.status-adherit { background: #e8f5e9; color: #1b5e20; }
+.status-adherit { background: #f9e8ea; color: #801D28; }
 .status-no { background: #fce4ec; color: #880e4f; }
 .popup-pct { font-size: 28px; font-weight: 900; color: #801D28; line-height: 1; }
 .popup-pct-lbl { font-size: 11px; color: #666; margin-top: 1px; }
@@ -138,14 +138,16 @@ header p { font-size: 12px; opacity: 0.85; margin-top: 2px; }
   <span style="color:#ccc">|</span>
   <select id="filter-zona" onchange="filterZona(this.value)" style="font-size:12px;border:1px solid #ccc;border-radius:4px;padding:3px 8px;font-family:inherit;">
     <option value="">Totes les zones sanitàries</option>
-    <option>Alt Pirineu / Lleida</option>
-    <option>Barcelona ciutat</option>
-    <option>Camp de Tarragona / Terres de l'Ebre</option>
+    <option>Alt Pirineu i Aran</option>
+    <option>Barcelona Ciutat</option>
+    <option>Barcelona Metropolitana Nord</option>
+    <option>Barcelona Metropolitana Sud</option>
+    <option>Camp de Tarragona</option>
     <option>Catalunya Central</option>
     <option>Girona</option>
-    <option>Metropolità Nord</option>
-    <option>Metropolità Sud</option>
-    <option>Penedès / Garraf / Anoia</option>
+    <option>Lleida</option>
+    <option>Penedès</option>
+    <option>Terres de l'Ebre</option>
   </select>
   <div class="sync-info">
     <div class="sync-dot loading" id="sync-dot"></div>
@@ -172,22 +174,22 @@ let lastSync = null;
 let syncInterval = null;
 
 const HOSPITALS = [
-  {id:37,nom:"Fundació Sant Hospital",municipi:"La Seu d'Urgell",zona:"Alt Pirineu / Lleida",lat:42.3549,lng:1.4609},
-  {id:39,nom:"AECT Hospital de Cerdanya",municipi:"Puigcerdà",zona:"Alt Pirineu / Lleida",lat:42.4438,lng:1.9305},
-  {id:38,nom:"Hospital Comarcal del Pallars",municipi:"Tremp",zona:"Alt Pirineu / Lleida",lat:42.1644,lng:0.8973},
-  {id:36,nom:"Espitau Val d'Aran",municipi:"Vielha e Mijaran",zona:"Alt Pirineu / Lleida",lat:42.7023,lng:0.7974},
-  {id:3,nom:"Clínica Mi NovAliança",municipi:"Lleida",zona:"Alt Pirineu / Lleida",lat:41.6224,lng:0.6266},
-  {id:1,nom:"Hospital Universitari Arnau de Vilanova",municipi:"Lleida",zona:"Alt Pirineu / Lleida",lat:41.6267,lng:0.6134},
-  {id:2,nom:"Hospital Universitari Santa Maria",municipi:"Lleida",zona:"Alt Pirineu / Lleida",lat:41.6241,lng:0.6183},
-  {id:8,nom:"Pius Hospital de Valls",municipi:"Valls",zona:"Camp de Tarragona / Terres de l'Ebre",lat:41.2833,lng:1.2512},
-  {id:9,nom:"Centre MQ Reus",municipi:"Reus",zona:"Camp de Tarragona / Terres de l'Ebre",lat:41.1603,lng:1.1062},
-  {id:5,nom:"Hospital Universitari de Sant Joan de Reus",municipi:"Reus",zona:"Camp de Tarragona / Terres de l'Ebre",lat:41.1451,lng:1.123},
-  {id:7,nom:"Hospital Sant Pau i Santa Tecla",municipi:"Tarragona",zona:"Camp de Tarragona / Terres de l'Ebre",lat:41.1163,lng:1.2549},
-  {id:6,nom:"Hospital Universitari Joan XXIII de Tarragona",municipi:"Tarragona",zona:"Camp de Tarragona / Terres de l'Ebre",lat:41.1242,lng:1.2385},
-  {id:13,nom:"Clínica Terres de l'Ebre",municipi:"Tortosa",zona:"Camp de Tarragona / Terres de l'Ebre",lat:40.8138,lng:0.5162},
-  {id:11,nom:"Hospital Universitari de Tortosa Verge de la Cinta",municipi:"Tortosa",zona:"Camp de Tarragona / Terres de l'Ebre",lat:40.8112,lng:0.5241},
-  {id:14,nom:"Hospital Comarcal d'Amposta",municipi:"Amposta",zona:"Camp de Tarragona / Terres de l'Ebre",lat:40.7089,lng:0.5783},
-  {id:12,nom:"Hospital Comarcal Móra d'Ebre",municipi:"Móra d'Ebre",zona:"Camp de Tarragona / Terres de l'Ebre",lat:41.0956,lng:0.6383},
+  {id:37,nom:"Fundació Sant Hospital",municipi:"La Seu d'Urgell",zona:"Alt Pirineu i Aran",lat:42.3549,lng:1.4609},
+  {id:39,nom:"AECT Hospital de Cerdanya",municipi:"Puigcerdà",zona:"Alt Pirineu i Aran",lat:42.4438,lng:1.9305},
+  {id:38,nom:"Hospital Comarcal del Pallars",municipi:"Tremp",zona:"Alt Pirineu i Aran",lat:42.1644,lng:0.8973},
+  {id:36,nom:"Espitau Val d'Aran",municipi:"Vielha e Mijaran",zona:"Alt Pirineu i Aran",lat:42.7023,lng:0.7974},
+  {id:3,nom:"Clínica Mi NovAliança",municipi:"Lleida",zona:"Lleida",lat:41.6224,lng:0.6266},
+  {id:1,nom:"Hospital Universitari Arnau de Vilanova",municipi:"Lleida",zona:"Lleida",lat:41.6267,lng:0.6134},
+  {id:2,nom:"Hospital Universitari Santa Maria",municipi:"Lleida",zona:"Lleida",lat:41.6241,lng:0.6183},
+  {id:8,nom:"Pius Hospital de Valls",municipi:"Valls",zona:"Camp de Tarragona",lat:41.2833,lng:1.2512},
+  {id:9,nom:"Centre MQ Reus",municipi:"Reus",zona:"Camp de Tarragona",lat:41.1603,lng:1.1062},
+  {id:5,nom:"Hospital Universitari de Sant Joan de Reus",municipi:"Reus",zona:"Camp de Tarragona",lat:41.1451,lng:1.123},
+  {id:7,nom:"Hospital Sant Pau i Santa Tecla",municipi:"Tarragona",zona:"Camp de Tarragona",lat:41.1163,lng:1.2549},
+  {id:6,nom:"Hospital Universitari Joan XXIII de Tarragona",municipi:"Tarragona",zona:"Camp de Tarragona",lat:41.1242,lng:1.2385},
+  {id:13,nom:"Clínica Terres de l'Ebre",municipi:"Tortosa",zona:"Terres de l'Ebre",lat:40.8138,lng:0.5162},
+  {id:11,nom:"Hospital Universitari de Tortosa Verge de la Cinta",municipi:"Tortosa",zona:"Terres de l'Ebre",lat:40.8112,lng:0.5241},
+  {id:14,nom:"Hospital Comarcal d'Amposta",municipi:"Amposta",zona:"Terres de l'Ebre",lat:40.7089,lng:0.5783},
+  {id:12,nom:"Hospital Comarcal Móra d'Ebre",municipi:"Móra d'Ebre",zona:"Terres de l'Ebre",lat:41.0956,lng:0.6383},
   {id:28,nom:"Hospital Sant Joan de Déu de Manresa",municipi:"Manresa",zona:"Catalunya Central",lat:41.7205,lng:1.8378},
   {id:30,nom:"Hospital Comarcal Sant Bernabé",municipi:"Berga",zona:"Catalunya Central",lat:42.1065,lng:1.8522},
   {id:29,nom:"Hospital Universitari de Vic",municipi:"Vic",zona:"Catalunya Central",lat:41.9367,lng:2.2603},
@@ -202,46 +204,46 @@ const HOSPITALS = [
   {id:18,nom:"Clínica Salus Infirmorum",municipi:"Banyoles",zona:"Girona",lat:42.1147,lng:2.7612},
   {id:19,nom:"Hospital de Campdevànol",municipi:"Campdevànol",zona:"Girona",lat:42.2227,lng:2.1667},
   {id:23,nom:"Hospital Comarcal de Blanes",municipi:"Blanes",zona:"Girona",lat:41.6874,lng:2.802},
-  {id:67,nom:"Fundació Hospitalàries Barcelona",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4256,lng:2.1409},
-  {id:69,nom:"Fundació Puigvert/Iuna",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4125,lng:2.1728},
-  {id:61,nom:"Hospital Clínic de Barcelona",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.3894,lng:2.1522},
-  {id:62,nom:"Hospital Clínic de Barcelona, seu Plató",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.395,lng:2.158},
-  {id:63,nom:"Hospital Clínic de Barcelona, seu Sabino de Arana",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.387,lng:2.129},
-  {id:68,nom:"Hospital de la Santa Creu i Sant Pau",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4155,lng:2.1747},
-  {id:66,nom:"Hospital de l'Esperança",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4256,lng:2.1409},
-  {id:65,nom:"Hospital del Mar",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.3838,lng:2.1944},
-  {id:64,nom:"Hospital Dos de Maig",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4107,lng:2.177},
-  {id:71,nom:"Hospital Universitari de Traumatologia i Rehabilitació de la Vall d'Hebron",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4277,lng:2.1424},
-  {id:71,nom:"Hospital Universitari General de la Vall d'Hebron",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4277,lng:2.1424},
-  {id:71,nom:"Hospital Universitari Maternoinfantil de la Vall d'Hebron",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.4277,lng:2.1424},
-  {id:70,nom:"Hospital Universitari Sagrat Cor",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.3888,lng:2.1457},
-  {id:71,nom:"Hospital Universitari Vall d'Hebron. Edifici Garbí",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.426,lng:2.142},
-  {id:71,nom:"Hospital Universitari Vall d'Hebron. Edifici Gregal",municipi:"Barcelona",zona:"Barcelona ciutat",lat:41.428,lng:2.144},
-  {id:53,nom:"Fundació Hospital de l'Esperit Sant",municipi:"Santa Coloma de Gramenet",zona:"Metropolità Nord",lat:41.4379,lng:2.2132},
-  {id:58,nom:"Hospital Municipal Badalona",municipi:"Badalona",zona:"Metropolità Nord",lat:41.4505,lng:2.2456},
-  {id:49,nom:"Hospital Universitari Germans Trias i Pujol de Badalona",municipi:"Badalona",zona:"Metropolità Nord",lat:41.4812,lng:2.2375},
-  {id:50,nom:"ICO Badalona",municipi:"Badalona",zona:"Metropolità Nord",lat:41.48,lng:2.238},
-  {id:51,nom:"Institut Guttmann",municipi:"Badalona",zona:"Metropolità Nord",lat:41.4786,lng:2.2375},
-  {id:60,nom:"Hospital de Mataró",municipi:"Mataró",zona:"Metropolità Nord",lat:41.5561,lng:2.4298},
-  {id:54,nom:"Hospital de Sabadell",municipi:"Sabadell",zona:"Metropolità Nord",lat:41.5573,lng:2.1103},
-  {id:56,nom:"Hospital de Terrassa",municipi:"Terrassa",zona:"Metropolità Nord",lat:41.5569,lng:2.0526},
-  {id:52,nom:"Hospital Universitari Mútua Terrassa",municipi:"Terrassa",zona:"Metropolità Nord",lat:41.5637,lng:2.0171},
-  {id:59,nom:"Hospital de Mollet",municipi:"Mollet del Vallès",zona:"Metropolità Nord",lat:41.5437,lng:2.2022},
-  {id:55,nom:"Hospital de Sant Celoni",municipi:"Sant Celoni",zona:"Metropolità Nord",lat:41.6877,lng:2.4859},
-  {id:57,nom:"Hospital General de Granollers",municipi:"Granollers",zona:"Metropolità Nord",lat:41.6138,lng:2.2958},
-  {id:48,nom:"Hospital de Sant Joan Despí Moisès Broggi",municipi:"Sant Joan Despí",zona:"Metropolità Sud",lat:41.3738,lng:2.0723},
-  {id:40,nom:"Hospital de Viladecans",municipi:"Viladecans",zona:"Metropolità Sud",lat:41.3125,lng:2.0146},
-  {id:43,nom:"Hospital General. Parc Sanitari Sant Joan de Déu",municipi:"Sant Boi de Llobregat",zona:"Metropolità Sud",lat:41.3539,lng:2.0351},
-  {id:44,nom:"Hospital Sant Joan de Déu de Martorell",municipi:"Martorell",zona:"Metropolità Sud",lat:41.4718,lng:1.9203},
-  {id:45,nom:"Hospital Sant Joan de Déu d'Esplugues",municipi:"Esplugues de Llobregat",zona:"Metropolità Sud",lat:41.3843,lng:2.1019},
-  {id:47,nom:"Hospital General de l'Hospitalet",municipi:"L'Hospitalet de Llobregat",zona:"Metropolità Sud",lat:41.3743,lng:2.1066},
-  {id:41,nom:"Hospital Universitari de Bellvitge",municipi:"L'Hospitalet de Llobregat",zona:"Metropolità Sud",lat:41.3448,lng:2.1042},
-  {id:42,nom:"ICO L'Hospitalet",municipi:"L'Hospitalet de Llobregat",zona:"Metropolità Sud",lat:41.3448,lng:2.1106},
-  {id:33,nom:"Hospital Comarcal de l'Alt Penedès",municipi:"Vilafranca del Penedès",zona:"Penedès / Garraf / Anoia",lat:41.3564,lng:1.7049},
-  {id:32,nom:"Hospital Universitari d'Igualada",municipi:"Igualada",zona:"Penedès / Garraf / Anoia",lat:41.5887,lng:1.6201},
-  {id:35,nom:"Hospital del Vendrell",municipi:"El Vendrell",zona:"Penedès / Garraf / Anoia",lat:41.2269,lng:1.5537},
-  {id:34,nom:"Hospital Comarcal Sant Antoni Abat",municipi:"Vilanova i la Geltrú",zona:"Penedès / Garraf / Anoia",lat:41.2288,lng:1.7219},
-  {id:31,nom:"Hospital Residència Sant Camil",municipi:"Sant Pere de Ribes",zona:"Penedès / Garraf / Anoia",lat:41.2539,lng:1.7653},
+  {id:67,nom:"Fundació Hospitalàries Barcelona",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4256,lng:2.1409},
+  {id:69,nom:"Fundació Puigvert/Iuna",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4125,lng:2.1728},
+  {id:61,nom:"Hospital Clínic de Barcelona",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.3894,lng:2.1522},
+  {id:62,nom:"Hospital Clínic de Barcelona, seu Plató",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.395,lng:2.158},
+  {id:63,nom:"Hospital Clínic de Barcelona, seu Sabino de Arana",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.387,lng:2.129},
+  {id:68,nom:"Hospital de la Santa Creu i Sant Pau",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4155,lng:2.1747},
+  {id:66,nom:"Hospital de l'Esperança",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4256,lng:2.1409},
+  {id:65,nom:"Hospital del Mar",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.3838,lng:2.1944},
+  {id:64,nom:"Hospital Dos de Maig",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4107,lng:2.177},
+  {id:71,nom:"Hospital Universitari de Traumatologia i Rehabilitació de la Vall d'Hebron",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4277,lng:2.1424},
+  {id:71,nom:"Hospital Universitari General de la Vall d'Hebron",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4277,lng:2.1424},
+  {id:71,nom:"Hospital Universitari Maternoinfantil de la Vall d'Hebron",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.4277,lng:2.1424},
+  {id:70,nom:"Hospital Universitari Sagrat Cor",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.3888,lng:2.1457},
+  {id:71,nom:"Hospital Universitari Vall d'Hebron. Edifici Garbí",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.426,lng:2.142},
+  {id:71,nom:"Hospital Universitari Vall d'Hebron. Edifici Gregal",municipi:"Barcelona",zona:"Barcelona Ciutat",lat:41.428,lng:2.144},
+  {id:53,nom:"Fundació Hospital de l'Esperit Sant",municipi:"Santa Coloma de Gramenet",zona:"Barcelona Metropolitana Nord",lat:41.4379,lng:2.2132},
+  {id:58,nom:"Hospital Municipal Badalona",municipi:"Badalona",zona:"Barcelona Metropolitana Nord",lat:41.4505,lng:2.2456},
+  {id:49,nom:"Hospital Universitari Germans Trias i Pujol de Badalona",municipi:"Badalona",zona:"Barcelona Metropolitana Nord",lat:41.4812,lng:2.2375},
+  {id:50,nom:"ICO Badalona",municipi:"Badalona",zona:"Barcelona Metropolitana Nord",lat:41.48,lng:2.238},
+  {id:51,nom:"Institut Guttmann",municipi:"Badalona",zona:"Barcelona Metropolitana Nord",lat:41.4786,lng:2.2375},
+  {id:60,nom:"Hospital de Mataró",municipi:"Mataró",zona:"Barcelona Metropolitana Nord",lat:41.5561,lng:2.4298},
+  {id:54,nom:"Hospital de Sabadell",municipi:"Sabadell",zona:"Barcelona Metropolitana Nord",lat:41.5573,lng:2.1103},
+  {id:56,nom:"Hospital de Terrassa",municipi:"Terrassa",zona:"Barcelona Metropolitana Nord",lat:41.5569,lng:2.0526},
+  {id:52,nom:"Hospital Universitari Mútua Terrassa",municipi:"Terrassa",zona:"Barcelona Metropolitana Nord",lat:41.5637,lng:2.0171},
+  {id:59,nom:"Hospital de Mollet",municipi:"Mollet del Vallès",zona:"Barcelona Metropolitana Nord",lat:41.5437,lng:2.2022},
+  {id:55,nom:"Hospital de Sant Celoni",municipi:"Sant Celoni",zona:"Barcelona Metropolitana Nord",lat:41.6877,lng:2.4859},
+  {id:57,nom:"Hospital General de Granollers",municipi:"Granollers",zona:"Barcelona Metropolitana Nord",lat:41.6138,lng:2.2958},
+  {id:48,nom:"Hospital de Sant Joan Despí Moisès Broggi",municipi:"Sant Joan Despí",zona:"Barcelona Metropolitana Sud",lat:41.3738,lng:2.0723},
+  {id:40,nom:"Hospital de Viladecans",municipi:"Viladecans",zona:"Barcelona Metropolitana Sud",lat:41.3125,lng:2.0146},
+  {id:43,nom:"Hospital General. Parc Sanitari Sant Joan de Déu",municipi:"Sant Boi de Llobregat",zona:"Barcelona Metropolitana Sud",lat:41.3539,lng:2.0351},
+  {id:44,nom:"Hospital Sant Joan de Déu de Martorell",municipi:"Martorell",zona:"Barcelona Metropolitana Sud",lat:41.4718,lng:1.9203},
+  {id:45,nom:"Hospital Sant Joan de Déu d'Esplugues",municipi:"Esplugues de Llobregat",zona:"Barcelona Metropolitana Sud",lat:41.3843,lng:2.1019},
+  {id:47,nom:"Hospital General de l'Hospitalet",municipi:"L'Hospitalet de Llobregat",zona:"Barcelona Metropolitana Sud",lat:41.3743,lng:2.1066},
+  {id:41,nom:"Hospital Universitari de Bellvitge",municipi:"L'Hospitalet de Llobregat",zona:"Barcelona Metropolitana Sud",lat:41.3448,lng:2.1042},
+  {id:42,nom:"ICO L'Hospitalet",municipi:"L'Hospitalet de Llobregat",zona:"Barcelona Metropolitana Sud",lat:41.3448,lng:2.1106},
+  {id:33,nom:"Hospital Comarcal de l'Alt Penedès",municipi:"Vilafranca del Penedès",zona:"Penedès",lat:41.3564,lng:1.7049},
+  {id:32,nom:"Hospital Universitari d'Igualada",municipi:"Igualada",zona:"Penedès",lat:41.5887,lng:1.6201},
+  {id:35,nom:"Hospital del Vendrell",municipi:"El Vendrell",zona:"Penedès",lat:41.2269,lng:1.5537},
+  {id:34,nom:"Hospital Comarcal Sant Antoni Abat",municipi:"Vilanova i la Geltrú",zona:"Penedès",lat:41.2288,lng:1.7219},
+  {id:31,nom:"Hospital Residència Sant Camil",municipi:"Sant Pere de Ribes",zona:"Penedès",lat:41.2539,lng:1.7653},
   {id:74,nom:"Hospital Sant Jaume de Manlleu",municipi:"Manlleu",zona:"Catalunya Central",lat:42.0019,lng:2.2872},
 ];
 
@@ -384,7 +386,7 @@ function makeIcon(adherit) {
 function buildPopup(h) {
   const d = getHData(h.id);
   const statusHtml = d.adherit
-    ? `<span class="popup-status status-adherit" style="font-size:15px;font-weight:700;">✓ Adherit</span>`
+    ? `<span class="popup-status status-adherit" style="font-size:15px;font-weight:700;color:#801D28;">✓ Adherit</span>`
     : `<span class="popup-status status-no">○ No adherit</span>`;
   const serveisHtml = d.serveis && d.serveis.length > 0
     ? d.serveis.map(s => {
@@ -436,11 +438,11 @@ function updateStats() {
   HOSPITALS.forEach(h => { if (getHData(h.id).adherit) adherits++; });
   const pct = Math.round(adherits/total*100);
   document.getElementById("stats-bar").innerHTML = `
-    <div class="stat"><div class="stat-num">${total}</div><div class="stat-lbl">Centres totals</div></div>
+    <div class="stat"><div class="stat-num" style="color:#888">${total}</div><div class="stat-lbl">Centres totals</div></div>
     <div class="stat-sep"></div>
-    <div class="stat"><div class="stat-num" style="color:#2e7d32">${adherits}</div><div class="stat-lbl">Adherits</div></div>
+    <div class="stat"><div class="stat-num" style="color:#801D28">${adherits}</div><div class="stat-lbl">Adherits</div></div>
     <div class="stat-sep"></div>
-    <div class="stat"><div class="stat-num" style="color:#888">${total-adherits}</div><div class="stat-lbl">Pendents</div></div>
+    <div class="stat"><div class="stat-num" style="color:#2e7d32">${total-adherits}</div><div class="stat-lbl">Pendents</div></div>
     <div class="stat-sep"></div>
     <div class="progress-wrap">
       <div class="progress-lbl"><span>Progrés de la campanya</span><span style="font-weight:700;color:#801D28">${pct}%</span></div>
