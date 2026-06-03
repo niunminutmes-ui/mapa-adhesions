@@ -133,8 +133,8 @@ header p { font-size: 12px; opacity: 0.85; margin-top: 2px; }
 
 <div class="legend">
   <span style="font-size:12px;font-weight:700;color:#555;">Llegenda:</span>
-  <span class="legend-item"><span class="dot dot-red"></span> Centre adherit</span>
-  <span class="legend-item"><span class="dot dot-green"></span> Centre no adherit</span>
+  <span class="legend-item"><span class="dot dot-red"></span> Centre hospitalari adherit</span>
+  <span class="legend-item"><span class="dot dot-green"></span> Centre hospitalari no adherit</span>
   <span style="color:#ccc">|</span>
   <select id="filter-zona" onchange="filterZona(this.value)" style="font-size:12px;border:1px solid #ccc;border-radius:4px;padding:3px 8px;font-family:inherit;">
     <option value="">Totes les zones sanitàries</option>
@@ -440,9 +440,9 @@ function updateStats() {
   document.getElementById("stats-bar").innerHTML = `
     <div class="stat"><div class="stat-num" style="color:#888">${total}</div><div class="stat-lbl">Centres totals</div></div>
     <div class="stat-sep"></div>
-    <div class="stat"><div class="stat-num" style="color:#801D28">${adherits}</div><div class="stat-lbl">Adherits</div></div>
+    <div class="stat"><div class="stat-num" style="color:#801D28">${adherits}</div><div class="stat-lbl">Centres hospitalaris adherits</div></div>
     <div class="stat-sep"></div>
-    <div class="stat"><div class="stat-num" style="color:#2e7d32">${total-adherits}</div><div class="stat-lbl">Pendents</div></div>
+    <div class="stat"><div class="stat-num" style="color:#2e7d32">${total-adherits}</div><div class="stat-lbl">Centres hospitalaris pendents</div></div>
     <div class="stat-sep"></div>
     <div class="progress-wrap">
       <div class="progress-lbl"><span>Progrés de la campanya</span><span style="font-weight:700;color:#801D28">${pct}%</span></div>
