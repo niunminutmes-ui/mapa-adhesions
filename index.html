@@ -433,9 +433,16 @@ function renderMarkers() {
 function updateStats() {
   const total = HOSPITALS.length;
   let adherits = 0;
-  HOSPITALS.forEach(h => { if (getHData(h.id).adherit) adherits++; });
+  let totalServeis = 0;
+  HOSPITALS.forEach(h => {
+    const d = getHData(h.id);
+    if (d.adherit) adherits++;
+    totalServeis += (d.serveis || []).length;
+  });
   const pct = Math.round(adherits/total*100);
   document.getElementById("stats-bar").innerHTML = `
+    <div class="stat"><div class="stat-num" style="color:#5bc8f5">${totalServeis}</div><div class="stat-lbl">Serveis adherits</div></div>
+    <div class="stat-sep"></div>
     <div class="stat"><div class="stat-num" style="color:#888">${total}</div><div class="stat-lbl">Centres totals</div></div>
     <div class="stat-sep"></div>
     <div class="stat"><div class="stat-num" style="color:#801D28">${adherits}</div><div class="stat-lbl">Centres hospitalaris adherits</div></div>
